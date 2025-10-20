@@ -4,6 +4,8 @@
     "": {
       "name": "sakai-init-project",
       "dependencies": {
+        "@fontsource/battambang": "^5.2.8",
+        "@fontsource/lato": "^5.2.7",
         "@primeuix/themes": "^1.2.5",
         "@tailwindcss/vite": "^4.1.14",
         "primeicons": "^7.0.0",
@@ -47,6 +49,10 @@
     "@emnapi/runtime": ["@emnapi/runtime@1.5.0", "", { "dependencies": { "tslib": "^2.4.0" } }, "sha512-97/BJ3iXHww3djw6hYIfErCZFee7qCtrneuLa20UXFCOTCfBM2cvQHjWJ2EG0s0MtdNwInarqCTz35i4wWXHsQ=="],
 
     "@emnapi/wasi-threads": ["@emnapi/wasi-threads@1.1.0", "", { "dependencies": { "tslib": "^2.4.0" } }, "sha512-WI0DdZ8xFSbgMjR1sFsKABJ/C5OnRrjT06JXbZKexJGrDuPTzZdDYfFlsgcCXCyf+suG5QU2e/y1Wo2V/OapLQ=="],
+
+    "@fontsource/battambang": ["@fontsource/battambang@5.2.8", "", {}, "sha512-WEwpyZJAQRNIWr6JJcTgaBxk8k7XHfqeXtt9p/FA5Ve3QziLy54eG7I2ncB4VIBwB5cPTgTO+mPt/S1MHbptEg=="],
+
+    "@fontsource/lato": ["@fontsource/lato@5.2.7", "", {}, "sha512-k5mum1ADbDW5cTw1Ett1eQVWeoZ6gq0ct6SFBibEhB4LRxhniChJZTBgd6ph5yBxLkN1fcnsnmicBNA4S/3nbw=="],
 
     "@isaacs/fs-minipass": ["@isaacs/fs-minipass@4.0.1", "", { "dependencies": { "minipass": "^7.0.4" } }, "sha512-wgm9Ehl2jpeqP3zw/7mo3kRHFp5MEDhqAdwy1fTGkHAwnkGOVsgpvQhL8B5n1qlb01jV3n/bI0ZfZp5lWA1k4w=="],
 

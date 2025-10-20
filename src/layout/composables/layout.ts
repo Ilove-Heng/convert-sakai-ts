@@ -19,8 +19,8 @@ const layoutState = reactive({
 });
 
 export function useLayout() {
-    const setActiveMenuItem = (item: { value: any; }) => {
-        layoutState.activeMenuItem = item.value || item;
+    const setActiveMenuItem = (item: any) => {
+        layoutState.activeMenuItem = item?.value || item;
     };
 
     const toggleDarkMode = () => {

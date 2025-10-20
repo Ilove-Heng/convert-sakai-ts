@@ -12,8 +12,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Button: typeof import('primevue/button')['default']
+    Checkbox: typeof import('primevue/checkbox')['default']
+    Dialog: typeof import('primevue/dialog')['default']
     FloatingConfigurator: typeof import('./src/components/FloatingConfigurator.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    InputText: typeof import('primevue/inputtext')['default']
+    LogoutDialog: typeof import('./src/components/layout/LogoutDialog.vue')['default']
+    Password: typeof import('primevue/password')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SelectButton: typeof import('primevue/selectbutton')['default']

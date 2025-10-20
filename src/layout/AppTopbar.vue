@@ -54,7 +54,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                         fill="#FCD34D" />
                 </svg>
 
-                <span>លិទ្ធផលឆ្នោត</span>
+                <span class="!font-battambang">Result</span>
             </router-link>
         </div>
 
@@ -73,8 +73,10 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                 </div>
             </div>
 
-            <button class="layout-topbar-menu-button layout-topbar-action"
-                v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }">
+            <button
+                class="layout-topbar-menu-button layout-topbar-action"
+                v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"
+            >
                 <i class="pi pi-ellipsis-v"></i>
             </button>
 

@@ -4,3 +4,12 @@
 
 /* Custom dark mode selector */
 @custom-variant dark (&:where(.my-app-dark, .my-app-dark *));
+
+
+:lang(en) {
+  /* font-family: 'Roboto', sans-serif; */
+}
+
+:lang(kh) {
+  font-family: 'Battambang', system-ui;
+}
