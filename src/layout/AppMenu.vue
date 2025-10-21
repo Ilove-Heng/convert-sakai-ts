@@ -3,7 +3,10 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import AppMenuItem from './AppMenuItem.vue';
 import LogoutDialog from '@/components/layout/LogoutDialog.vue';
+import { useAuth } from '@/middleware/auth';
+const { removeToken } = useAuth();
 
+// init state/data
 const router = useRouter();
 const logoutDialog = ref<InstanceType<typeof LogoutDialog> | null>(null);
 
@@ -12,13 +15,14 @@ const logout = () => {
 };
 
 const handleConfirmLogout = () => {
+    removeToken();
     router.push('/auth/login');
 }
 
 const model = ref([
     {
         label: 'Home',
-        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }],
+        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/dashboard' }],
 
     },
     {

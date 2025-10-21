@@ -3,7 +3,6 @@ import { useLayout } from '@/layout/composables/layout';
 import AppFooter from './AppFooter.vue';
 import AppSidebar from './AppSidebar.vue';
 import AppTopbar from './AppTopbar.vue';
-import Toast from 'primevue/toast';
 
 type OutsideClickListener = (event: MouseEvent) => void;
 
@@ -83,6 +82,5 @@ onBeforeUnmount(() => {
         </div>
         <div class="layout-mask animate-fadein" />
     </div>
-    <Toast />
 </template>
 

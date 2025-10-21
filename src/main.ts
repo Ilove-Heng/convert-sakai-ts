@@ -12,6 +12,9 @@ import Aura from '@primeuix/themes/aura';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
 
+// Tanstack Vue Query
+import { VueQueryPlugin } from '@tanstack/vue-query';
+
 // css
 import '@/assets/tailwind.css'
 
@@ -37,5 +40,16 @@ app.use(PrimeVue, {
 })
 app.use(ToastService);
 app.use(ConfirmationService);
+
+app.use(VueQueryPlugin, {
+    queryClientConfig: {
+        defaultOptions: {
+            queries: {
+                retry: 1,
+                refetchOnWindowFocus: false,
+            },
+        },
+    },
+});
 
 app.mount('#app')

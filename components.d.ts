@@ -15,13 +15,17 @@ declare module 'vue' {
     Checkbox: typeof import('primevue/checkbox')['default']
     Dialog: typeof import('primevue/dialog')['default']
     FloatingConfigurator: typeof import('./src/components/FloatingConfigurator.vue')['default']
+    Form: typeof import('@primevue/forms/form')['default']
+    FormField: typeof import('@primevue/forms/formfield')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     InputText: typeof import('primevue/inputtext')['default']
     LogoutDialog: typeof import('./src/components/layout/LogoutDialog.vue')['default']
+    Message: typeof import('primevue/message')['default']
     Password: typeof import('primevue/password')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SelectButton: typeof import('primevue/selectbutton')['default']
+    Toast: typeof import('primevue/toast')['default']
   }
   export interface GlobalDirectives {
     StyleClass: typeof import('primevue/styleclass')['default']

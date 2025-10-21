@@ -1,20 +1,14 @@
-<script setup lang="ts">
-import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
-import { ref } from 'vue';
-
-const email = ref('');
-const password = ref('');
-const checked = ref(false);
-</script>
-
 <template>
     <FloatingConfigurator />
-    <div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
+    <div
+        class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
         <div class="flex flex-col items-center justify-center">
-            <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
+            <div
+                style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
                 <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
                     <div class="text-center mb-8">
-                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class=" w-26 shrink-0 mx-auto">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class=" w-26 shrink-0 mx-auto">
                             <!-- Dashboard background -->
                             <rect x="4" y="8" width="56" height="48" rx="4" fill="#f0f4f8" stroke="#4F46E5"
                                 stroke-width="2" />
@@ -59,31 +53,121 @@ const checked = ref(false);
 
 
 
-                        <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to Lottery Result!</div>
+                        <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to Lottery
+                            Result!</div>
                         <span class="text-muted-color font-medium">Sign in to continue</span>
                     </div>
 
-                    <div>
-                        <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Username</label>
-                        <InputText id="email1" type="text" placeholder="Username address" class="w-full md:w-[30rem] mb-8" v-model="email" />
-
-                        <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
-                        <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="mb-4" fluid :feedback="false"></Password>
-
+                    <Form :resolver @submit="onFormSubmit">
+                        <FormField v-slot="$field" as="section" name="username" initialValue=""
+                            class="flex flex-col gap-2">
+                            <label for="username"
+                                class="block text-surface-900 dark:text-surface-0 text-xl font-medium mt-2">Username</label>
+                            <InputText id="username" type="text" placeholder="Username" class="w-full md:w-[30rem] " />
+                            <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{
+                                $field.error?.message }}</Message>
+                        </FormField>
+                        <FormField v-slot="$field" asChild name="password" initialValue="">
+                            <section class="flex flex-col gap-2">
+                                <label for="password"
+                                    class="block text-surface-900 dark:text-surface-0 text-xl font-medium mt-2">Password</label>
+                                <Password id="password" type="text" placeholder="Password" :feedback="false" toggleMask
+                                    fluid />
+                                <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{
+                                    $field.error?.message }}</Message>
+                            </section>
+                        </FormField>
                         <div class="flex items-center justify-between mt-2 mb-8 gap-8">
                             <div class="flex items-center">
                                 <Checkbox v-model="checked" id="rememberme1" binary class="mr-2"></Checkbox>
                                 <label for="rememberme1">Remember me</label>
                             </div>
-                            <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot password?</span>
+                            <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot
+                                password?</span>
                         </div>
-                        <Button label="Sign In" class="w-full" as="router-link" to="/"></Button>
-                    </div>
+                        <Button type="submit" label="Submit" class="w-full" />
+                    </Form>
+
                 </div>
             </div>
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
+import { Form } from '@primevue/forms';
+import { zodResolver } from '@primevue/forms/resolvers/zod';
+import { z } from 'zod';
+import { useRouter } from 'vue-router';
+// tanstack query
+import { useMutation } from '@tanstack/vue-query';
+// api imported
+import { authService, type LoginCredentials } from '@/api';
+// middleware imported
+import { useAuth } from '@/middleware/auth';
+
+const checked = ref(false)
+const errorMessage = ref('');
+const router = useRouter();
+const { setToken } = useAuth();
+
+
+
+const resolver = zodResolver(
+    z.object({
+        username: z.string().min(1, { message: 'Username is required.' }),
+        password: z
+            .string()
+            .min(3, { message: 'Minimum 3 characters.' })
+            .max(12, { message: 'Maximum 12 characters.' })
+    })
+);
+
+const loginMutation = useMutation({
+    mutationFn: (credentials: LoginCredentials) => authService.login(credentials),
+    onSuccess: (response) => {
+        setToken(response.data.token);
+        errorMessage.value = '';
+        router.push('/dashboard');
+    },
+    onError: (error: any) => {
+        console.error('Login failed:', error);
+        errorMessage.value = error?.response?.data?.message || 'Invalid credentials. Please try again.';
+    }
+});
+
+const onFormSubmit = (e: { originalEvent: Event; valid: boolean; states: any; errors: any; values: any; reset: () => void }) => {
+    // e.originalEvent: Represents the native form submit event.
+    // e.valid: A boolean that indicates whether the form is valid or not.
+    // e.states: Contains the current state of each form field, including validity status.
+    // e.errors: An object that holds any validation errors for the invalid fields in the form.
+    // e.values: An object containing the current values of all form fields.
+    // e.reset: A function that resets the form to its initial state.
+
+    console.log('e', e);
+
+
+    if (e.valid) {
+        const { username, password } = e.states as { username: any, password: any };
+        if (!username.value || !password.value) {
+            errorMessage.value = 'Please fill in all fields';
+            return;
+        }
+
+        errorMessage.value = '';
+        loginMutation.mutate({
+            username: username.value,
+            password: password.value
+        });
+
+        // toast.add({
+        //     severity: 'success', summary: 'Form is submitted.', detail: 'Message Content', life: 2500, group: 'br'
+        // })
+    }
+
+};
+</script>
 
 <style scoped>
 .pi-eye {
