@@ -32,6 +32,11 @@ const router = createRouter({
                     component: () => import('@/views/tracking/TrackingReport.vue')
                 },
                 {
+                    path: '/result/auto-entry',
+                    name: 'resultAuthEntry',
+                    component: () => import('@/views/result/ResultAutoEntry.vue')
+                },
+                {
                     path: '/result/entry',
                     name: 'resultEntry',
                     component: () => import('@/views/result/ResultEntry.vue')

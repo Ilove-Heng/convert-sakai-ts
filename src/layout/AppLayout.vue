@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useLayout } from '@/layout/composables/layout';
-import AppFooter from './AppFooter.vue';
+// import AppFooter from './AppFooter.vue';
 import AppSidebar from './AppSidebar.vue';
 import AppTopbar from './AppTopbar.vue';
 
@@ -78,7 +78,7 @@ onBeforeUnmount(() => {
             <div class="layout-main">
                 <router-view />
             </div>
-            <AppFooter />
+            <!-- <AppFooter /> -->
         </div>
         <div class="layout-mask animate-fadein" />
     </div>

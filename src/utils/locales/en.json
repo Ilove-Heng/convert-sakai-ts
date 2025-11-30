@@ -1,0 +1,20 @@
+{
+    "topbar_title": "Result",
+    "menu": {
+        "dashboard": "Dashboard",
+        "logout": "Logout",
+        "tracking_report": "Tracking Report",
+        "entry_result": "Entry Result",
+        "entry_auto_result": "Entry Auto Result"
+    },
+    "label": {
+        "home": "Home",
+        "operation": "Operation"
+    },
+    "page": {
+        "dashboard": "Dashboard Page",
+        "tracking_report": "Tracking Report Page",
+        "entry_result": "Entry Result Page",
+        "entry_auto_result": "Entry Auto Result Page"
+    }
+}

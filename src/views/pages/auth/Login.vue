@@ -112,15 +112,13 @@ const errorMessage = ref('');
 const router = useRouter();
 const { setToken } = useAuth();
 
-
-
 const resolver = zodResolver(
     z.object({
         username: z.string().min(1, { message: 'Username is required.' }),
         password: z
             .string()
             .min(3, { message: 'Minimum 3 characters.' })
-            .max(12, { message: 'Maximum 12 characters.' })
+            .max(20, { message: 'Maximum 20 characters.' })
     })
 );
 

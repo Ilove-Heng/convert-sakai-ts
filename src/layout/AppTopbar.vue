@@ -1,10 +1,3 @@
-<script setup lang="ts">
-import { useLayout } from '@/layout/composables/layout';
-import AppConfigurator from './AppConfigurator.vue';
-
-const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
-</script>
-
 <template>
     <div class="layout-topbar">
         <div class="layout-topbar-logo-container">
@@ -54,15 +47,42 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                         fill="#FCD34D" />
                 </svg>
 
-                <span class="!font-battambang">Result</span>
+                <span>{{ $t('topbar_title') }}</span>
             </router-link>
         </div>
 
         <div class="layout-topbar-actions">
             <div class="layout-config-menu">
-                <button type="button" class="layout-topbar-action" @click="toggleDarkMode">
-                    <i :class="['pi', { 'pi-moon': isDarkTheme, 'pi-sun': !isDarkTheme }]"></i>
-                </button>
+                <Button type="button" :label="selectedLanguage ? selectedLanguage.text : 'Select Lang'" @click="toggle" class="min-w-12" severity="secondary">
+                    <template #icon>
+                        <i class="pi pi-language"></i>
+                    </template>
+                </Button>
+
+                <Popover ref="op">
+                    <div class="flex flex-col gap-4">
+                        <div>
+                            <span class="font-medium block mb-2">Languages</span>
+                            <ul class="list-none p-0 m-0 flex flex-col">
+                                <li v-for="language in languages" :key="language.text" :class="['flex items-center gap-2 px-2 py-3 hover:bg-emphasis cursor-pointer rounded-border',
+                                    { 'bg-primary-100 dark:bg-primary-900/40': language.key === locale }
+                                ]" @click="selectLanguage(language)">
+                                    <img src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
+                                        :alt="language.text" :class="`mr-2 flag flag-${language.code.toLowerCase()}`"
+                                        style="width: 32px" />
+                                    >
+                                    <div>
+                                        <span class="font-medium">{{ language.text }}</span>
+                                        <div class="text-sm text-surface-500 dark:text-surface-400">
+                                            {{ language.subtitle}}
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </Popover>
+
                 <div class="relative">
                     <button
                         v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"
@@ -73,10 +93,8 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                 </div>
             </div>
 
-            <button
-                class="layout-topbar-menu-button layout-topbar-action"
-                v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"
-            >
+            <button class="layout-topbar-menu-button layout-topbar-action"
+                v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }">
                 <i class="pi pi-ellipsis-v"></i>
             </button>
 
@@ -90,12 +108,94 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                         <i class="pi pi-inbox"></i>
                         <span>Messages</span>
                     </button>
-                    <button type="button" class="layout-topbar-action">
-                        <i class="pi pi-user"></i>
-                        <span>Profile</span>
-                    </button>
+
+                    <Button type="button" label="បងធំ" class="min-w-12" >
+                        <template #icon>
+                            <i class="pi pi-user"></i>
+                        </template>
+                    </Button>
+
+
                 </div>
             </div>
         </div>
     </div>
 </template>
+
+
+<script setup lang="ts">
+import { useLayout } from '@/layout/composables/layout';
+import AppConfigurator from './AppConfigurator.vue';
+import { LocaleEnum } from '@/constants/enums/localeEnum';
+import { useI18n } from 'vue-i18n';
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/i18n/config';
+
+const { locale } = useI18n();
+const { toggleMenu } = useLayout();
+
+// init state/data
+const languages = ref([
+    {
+        id: 1,
+        key: LocaleEnum.kh,
+        text: 'ខ្មែរ',
+        icon: 'mdi-account',
+        code: 'KH',
+        subtitle: 'Khmer'
+    },
+    {
+        id: 2,
+        key: LocaleEnum.en,
+        text: 'English',
+        icon: 'mdi-account',
+        code: 'US',
+        subtitle: 'UK'
+    }
+]);
+
+type Lang = typeof languages.value[0];
+
+const op = ref<any>();
+
+// Track selected language
+const selectedLanguage = ref(languages.value.find(lang => lang.key === locale.value));
+
+const toggle = (event: Event) => {
+    op.value.toggle(event);
+}
+
+const selectLanguage = (language: Lang) => {
+    console.log('language', language.key);
+    // update state/data
+    locale.value = language.key;
+    selectedLanguage.value = language;
+
+    // Update localStorage
+    localStorage.setItem("language", locale.value);
+
+    // Update HTML lang attribute for styling
+    document.documentElement.lang = locale.value;
+
+    // close popup
+    op.value.hide();
+}
+
+onMounted(() => {
+    // locale.value = langStorage;
+    if (SUPPORTED_LANGUAGES.includes(locale.value as SupportedLanguage)) {
+        // Update i18n language
+        console.log('locale', locale.value);
+        // Update localStorage
+        localStorage.setItem('language', locale.value);
+        // Update HTML lang attribute
+        document.documentElement.lang = locale.value;
+    }
+
+    // Retrieve the language from local storage on component mount
+    const savedLang = localStorage.getItem('language');
+    if (savedLang && SUPPORTED_LANGUAGES.includes(savedLang as SupportedLanguage)) {
+        locale.value = savedLang;
+    }
+})
+
+</script>

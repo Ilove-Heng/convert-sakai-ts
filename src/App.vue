@@ -16,4 +16,5 @@ setToastService(toast);
 
 <style lang="scss">
 @use "@/assets/layout/layout" as *;
+@use "@/assets/styles" as *;
 </style>

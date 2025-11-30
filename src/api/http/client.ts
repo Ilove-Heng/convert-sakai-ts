@@ -12,8 +12,6 @@ export const setToastService = (toast: ToastServiceMethods) => {
 };
 
 const createClient = (): AxiosInstance => {
-
-
   const client = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     headers: {

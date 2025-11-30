@@ -10,10 +10,14 @@ import router from './router';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import ConfirmationService from 'primevue/confirmationservice';
+import KeyFilter from 'primevue/keyfilter';
 import ToastService from 'primevue/toastservice';
 
 // Tanstack Vue Query
 import { VueQueryPlugin } from '@tanstack/vue-query';
+
+// i18n
+import { i18n } from '@/i18n';
 
 // css
 import '@/assets/tailwind.css'
@@ -28,6 +32,12 @@ import '@fontsource/battambang/300.css';
 import '@fontsource/battambang/400.css';
 import '@fontsource/battambang/700.css';
 
+// public sans
+import '@fontsource/public-sans/400.css';
+import '@fontsource/public-sans/500.css';
+import '@fontsource/public-sans/600.css';
+import '@fontsource/public-sans/700.css';
+
 const app = createApp(App);
 app.use(router);
 app.use(PrimeVue, {
@@ -40,6 +50,8 @@ app.use(PrimeVue, {
 })
 app.use(ToastService);
 app.use(ConfirmationService);
+app.use(i18n);
+app.directive('keyfilter', KeyFilter);
 
 app.use(VueQueryPlugin, {
     queryClientConfig: {

@@ -6,10 +6,10 @@
 @custom-variant dark (&:where(.my-app-dark, .my-app-dark *));
 
 
-:lang(en) {
-  /* font-family: 'Roboto', sans-serif; */
+:lang(en) :not(.pi) {
+  font-family: Lato, sans-serif;
 }
 
-:lang(kh) {
+:lang(kh) :not(.pi) {
   font-family: 'Battambang', system-ui;
 }

@@ -1,0 +1,20 @@
+{
+    "topbar_title": "លទ្ធផល",
+    "menu": {
+        "dashboard": "ផ្ទាំងគ្រប់គ្រង",
+        "logout": "ចាកចេញ",
+        "tracking_report": "សាងលេខ",
+        "entry_result": "បញ្ជូលសេរ៊ី",
+        "entry_auto_result": "បញ្ជូលស្វ័យប្រវត្តិសេរ៊ី"
+    },
+    "label": {
+        "home": "ទំព័រដើម",
+        "operation": "ប្រតិបត្តិការ"
+    },
+    "page": {
+        "dashboard": "ទំព័រផ្ទាំងគ្រប់គ្រង",
+        "tracking_report": "ទំព័រសាងលេខ",
+        "entry_result": "ទំព័របញ្ជូលសេរ៊ី",
+        "entry_auto_result": "ទំព័របញ្ជូលស្វ័យប្រវត្តិសេរ៊ី"
+    }
+}

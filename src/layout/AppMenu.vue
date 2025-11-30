@@ -4,9 +4,11 @@ import { useRouter } from 'vue-router';
 import AppMenuItem from './AppMenuItem.vue';
 import LogoutDialog from '@/components/layout/LogoutDialog.vue';
 import { useAuth } from '@/middleware/auth';
+import { useI18n } from 'vue-i18n';
 const { removeToken } = useAuth();
 
 // init state/data
+const { t } = useI18n();
 const router = useRouter();
 const logoutDialog = ref<InstanceType<typeof LogoutDialog> | null>(null);
 
@@ -21,26 +23,32 @@ const handleConfirmLogout = () => {
 
 const model = ref([
     {
-        label: 'Home',
-        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/dashboard' }],
+        label: t('label.home'),
+        items: [{ label: t('menu.dashboard'), icon: 'pi pi-fw pi-home', to: '/dashboard' }],
 
     },
     {
-        label: 'Operation',
+        label: t('label.operation'),
         items: [
             {
-                label: 'Tracking Report',
+                label: t('menu.tracking_report'),
                 icon: 'pi pi-fw pi-chart-scatter',
                 to: '/tracking/report'
             },
             {
-                label: 'Entry Result',
-                icon: 'pi pi-fw pi-file-export',
+                label: t('menu.entry_auto_result'),
+                icon: 'pi pi-fw pi-sitemap',
+                to: '/result/auto-entry'
+            },
+            {
+                label: t('menu.entry_result'),
+                icon: 'pi pi-fw pi-calculator',
                 to: '/result/entry'
             },
         ]
     }
 ]);
+
 
 </script>
 
@@ -54,7 +62,7 @@ const model = ref([
                 <li class="logout-button">
                     <a @click="logout">
                         <i class="pi pi-fw pi-sign-out layout-menuitem-icon"></i>
-                        <span class="layout-menuitem-text">Logout</span>
+                        <span class="layout-menuitem-text">{{ $t('menu.logout') }}</span>
                     </a>
                 </li>
             </ul>

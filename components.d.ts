@@ -11,23 +11,40 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Avatar: typeof import('primevue/avatar')['default']
+    BaseBreadcrumb: typeof import('./src/components/shared/BaseBreadcrumb.vue')['default']
     Button: typeof import('primevue/button')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
+    Chip: typeof import('primevue/chip')['default']
+    copy: typeof import('./src/components/template/vn/VN4h30 copy.vue')['default']
+    DatePicker: typeof import('primevue/datepicker')['default']
     Dialog: typeof import('primevue/dialog')['default']
+    Divider: typeof import('primevue/divider')['default']
     FloatingConfigurator: typeof import('./src/components/FloatingConfigurator.vue')['default']
     Form: typeof import('@primevue/forms/form')['default']
     FormField: typeof import('@primevue/forms/formfield')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    IconField: typeof import('primevue/iconfield')['default']
+    IMdiHome: typeof import('~icons/mdi/home')['default']
+    InputIcon: typeof import('primevue/inputicon')['default']
     InputText: typeof import('primevue/inputtext')['default']
     LogoutDialog: typeof import('./src/components/layout/LogoutDialog.vue')['default']
     Message: typeof import('primevue/message')['default']
     Password: typeof import('primevue/password')['default']
+    Popover: typeof import('primevue/popover')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Select: typeof import('primevue/select')['default']
     SelectButton: typeof import('primevue/selectbutton')['default']
+    Splitter: typeof import('primevue/splitter')['default']
+    SplitterPanel: typeof import('primevue/splitterpanel')['default']
     Toast: typeof import('primevue/toast')['default']
+    Vn4h30: typeof import('./src/components/template/vn/Vn4h30.vue')['default']
+    VN4h30: typeof import('./src/components/template/vn/VN4h30.vue')['default']
+    VN6h30: typeof import('./src/components/template/vn/VN6h30.vue')['default']
   }
   export interface GlobalDirectives {
+    KeyFilter: typeof import('primevue/keyfilter')['default']
     StyleClass: typeof import('primevue/styleclass')['default']
   }
 }

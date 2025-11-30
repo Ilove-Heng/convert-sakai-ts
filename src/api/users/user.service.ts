@@ -1,5 +1,5 @@
 import { apiRequest } from '../http/client';
-import type { UserResponse } from '../types/user.types';
+import type { UserResponse } from '@/api';
 
 export const userService = {
   async getUsers(options: { signal?: AbortSignal } = {}): Promise<UserResponse> {
