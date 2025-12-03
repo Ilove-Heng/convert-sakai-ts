@@ -1,4 +1,4 @@
-import { postOrdersService } from "@/api";
+import { postOrdersService, type PostOrder } from "@/api";
 import { useQuery } from "@tanstack/vue-query";
 
 
@@ -9,13 +9,13 @@ const postOrdersKeys = {
 }
 
 // Query function with proper typing and cancellation
-const fetchPostOrders = async () => {
+const fetchPostOrders = async (): Promise<PostOrder[]> => {
    const response = await postOrdersService.getPostOrders();
-   return response.data;
+   return response.data.post_orders;
 };
 
 export const usePostOrders = () => {
-    const { data: postOrders, isLoading, error, isFetching } = useQuery({
+    const { data: postOrder, isLoading, error, isFetching } = useQuery({
         queryKey: postOrdersKeys.lists(),
         queryFn: fetchPostOrders,
         retry: 1,
@@ -27,7 +27,7 @@ export const usePostOrders = () => {
     });
 
     return {
-        postOrders,
+        postOrder,
         isLoading,
         error, 
         isFetching

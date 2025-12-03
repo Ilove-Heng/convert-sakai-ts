@@ -2,6 +2,7 @@
     "topbar_title": "លទ្ធផល",
     "menu": {
         "dashboard": "ផ្ទាំងគ្រប់គ្រង",
+        "live_entry_result": "លទ្ធផលបន្តផ្ទាល់",
         "logout": "ចាកចេញ",
         "tracking_report": "សាងលេខ",
         "entry_result": "បញ្ជូលសេរ៊ី",
@@ -13,8 +14,12 @@
     },
     "page": {
         "dashboard": "ទំព័រផ្ទាំងគ្រប់គ្រង",
+        "live_entry_result": "ទំព័រលទ្ធផលបន្តផ្ទាល់",
         "tracking_report": "ទំព័រសាងលេខ",
         "entry_result": "ទំព័របញ្ជូលសេរ៊ី",
         "entry_auto_result": "ទំព័របញ្ជូលស្វ័យប្រវត្តិសេរ៊ី"
+    },
+    "form": {
+        "today": "ថ្ងៃនេះ"
     }
 }

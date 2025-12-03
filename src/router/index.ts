@@ -27,6 +27,11 @@ const router = createRouter({
                     component: () => import("@/views/Dashboard.vue")
                 },
                 {
+                    path: '/live_entry_result',
+                    name: 'liveEntryResult',
+                    component: () => import("@/views/result/LiveEntryResult.vue")
+                },
+                {
                     path: '/tracking/report',
                     name: 'trackingReport',
                     component: () => import('@/views/tracking/TrackingReport.vue')

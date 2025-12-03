@@ -38,6 +38,12 @@ import '@fontsource/public-sans/500.css';
 import '@fontsource/public-sans/600.css';
 import '@fontsource/public-sans/700.css';
 
+// Roboto
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/600.css';
+import '@fontsource/roboto/700.css';
+
 const app = createApp(App);
 app.use(router);
 app.use(PrimeVue, {

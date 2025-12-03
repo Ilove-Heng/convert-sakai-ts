@@ -13,3 +13,7 @@
 :lang(kh) :not(.pi) {
   font-family: 'Battambang', system-ui;
 }
+
+.Roboto {
+  font-family: 'Roboto', sans-serif !important;
+}

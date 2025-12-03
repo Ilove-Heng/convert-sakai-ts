@@ -32,7 +32,7 @@ export interface Post {
   max_amount: number
   max_total_amount: number
   number_type_id: number
-  Numbers: Number[]
+  numbers: Number[]
 }
 
 export interface Number {

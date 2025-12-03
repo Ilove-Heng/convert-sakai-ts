@@ -9,9 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource-variable/roboto": "^5.2.9",
     "@fontsource/battambang": "^5.2.8",
     "@fontsource/lato": "^5.2.7",
     "@fontsource/public-sans": "^5.2.7",
+    "@fontsource/roboto": "^5.2.9",
     "@primeuix/themes": "^1.2.5",
     "@primevue/forms": "^4.5.0",
     "@tailwindcss/vite": "^4.1.17",

@@ -1,5 +1,4 @@
-import { seriesService, type GroupTimeInfo, type SeriesInfo } from "@/api"
-import { storageCache } from "@/utils/cache/storage";
+import { seriesService, type SeriesTime, type Sery } from "@/api"
 import { useQuery } from "@tanstack/vue-query";
 
 
@@ -13,14 +12,14 @@ const seriesKeys = {
 
 
 // Query function with proper typing and cancellation
-const fetchSeries = async (): Promise<SeriesInfo> => {
+const fetchSeries = async (): Promise<Sery[]> => {
     const response = await seriesService.getSeries();
-    return response.data;
+    return response.data.series;
 };
 
-const fetchGroupTimesBySery = async (seryId: number): Promise<GroupTimeInfo> => {
+const fetchGroupTimesBySery = async (seryId: number): Promise<SeriesTime[]> => {
     const response = await seriesService.getGroupTimesBySery(seryId);
-    return response.data;
+    return response.data.series_times;
 } 
 
 export const useSeries = () => {
@@ -33,19 +32,6 @@ export const useSeries = () => {
         gcTime: Infinity,
         refetchOnMount: false,
         refetchOnReconnect: false,
-        initialData: (): SeriesInfo | undefined => {
-            // Use storageCache.get() - but since it's async and initialData needs sync,
-            // we still need to use localStorage.getItem directly here
-            const cached = localStorage.getItem('series-cache');
-            return cached ? JSON.parse(cached) : undefined;
-        },
-    });
-
-    // Watch and persist to localStorage using storageCache
-    watch(series, async (newSeries) => {
-        if (newSeries) {
-            await storageCache.set('series-cache', newSeries);
-        }
     });
 
     return {
@@ -56,15 +42,19 @@ export const useSeries = () => {
     }
 }
 
-export const useGroupTime = (seryId: number) => {
+export const useGroupTime = (seryId: MaybeRefOrGetter<number | undefined | null>) => {
+    // toValue works with refs, getters, and plain values
+    const seryIdRef = computed(() => toValue(seryId));
+    
     const { 
         data: groupTime, 
         isLoading, 
         error, 
         isFetching 
     } = useQuery({
-        queryKey: seriesKeys.groupTime(seryId),
-        queryFn: () => fetchGroupTimesBySery(seryId),
+        queryKey: computed(() => seriesKeys.groupTime(seryIdRef.value ?? 1)),
+        queryFn: () => fetchGroupTimesBySery(seryIdRef.value ?? 1),
+        enabled: computed(() => !!seryIdRef.value),
         retry: 1,
         refetchOnWindowFocus: false,
         staleTime: Infinity,

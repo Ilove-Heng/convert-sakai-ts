@@ -1,4 +1,4 @@
-import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
+import  { type NavigationGuardNext, type RouteLocationNormalized, useRouter } from 'vue-router';
 
 export function authMiddleware(
   to: RouteLocationNormalized,
@@ -25,9 +25,14 @@ export function authMiddleware(
 }
 
 export function useAuth() {
+  const router = useRouter();
   const isAuthenticated = () => !!localStorage.getItem('auth_token');
   const setToken = (token: string) => localStorage.setItem('auth_token', token);
-  const removeToken = () => localStorage.removeItem('auth_token');
+  const removeToken = () => {
+    localStorage.removeItem('auth_token');
+    // redirect to login if no token
+    router.push({ name: 'login' })
+  };
 
   return {
     isAuthenticated,

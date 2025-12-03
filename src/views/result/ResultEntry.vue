@@ -163,7 +163,7 @@ onUnmounted(() => {
         text-align: center;
         height: 25px;
         font-size: 1.5em;
-        font-weight: 700;
+        font-weight: bold;
         font-family: 'Public Sans', sans-serif !important;
     }
 }

@@ -24,7 +24,7 @@
 
     .layout-root-menuitem {
         > .layout-menuitem-root-text {
-            font-size: 0.857rem;
+            font-size: 1rem;
             text-transform: uppercase;
             font-weight: 700;
             color: var(--text-color);
@@ -71,6 +71,7 @@
             transition:
                 background-color var(--element-transition-duration),
                 box-shadow var(--element-transition-duration);
+            font-size: 1.25rem;
 
             .layout-menuitem-icon {
                 margin-right: 0.5rem;
