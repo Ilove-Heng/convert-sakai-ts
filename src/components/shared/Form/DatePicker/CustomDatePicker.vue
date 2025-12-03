@@ -5,6 +5,7 @@
     showIcon
     fluid
     showButtonBar
+    dateFormat="dd/mm/yy"
     placeholder="Basic"
     iconDisplay="input"
     class="h-[42px]"

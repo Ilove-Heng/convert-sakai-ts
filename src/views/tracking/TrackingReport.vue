@@ -5,11 +5,11 @@
     <!-- Desktop Filters (hidden on mobile) -->
     <div class="hidden lg:flex gap-2 items-center">
       <SelectPlatform v-model="selectedPlatform" class="shrink-0" />
-      <SelectSery v-model="selectedSery" class="shrink-0" />
-      <SelectGroupTime v-model="selectedGroupTime" :sery-id="selectedSery && selectedSery.id" class="shrink-0" />
-      <SelectPostOrder v-model="selectedPostOrder" class="shrink-0" />
-      <CustomDatePicker v-model="selectedDate" class="shrink-0" />
-      <CustomToggleSwitch v-model="isCheckedWinNumber" class="shrink-0">
+      <SelectSery v-model="selectedSery" @update:model-value="handleSelectedSery" class="shrink-0" />
+      <SelectGroupTime v-model="selectedGroupTime" @update:model-value="handleSelectedGroupTime" :sery-id="selectedSery && selectedSery.id" class="shrink-0" />
+      <SelectPostOrder v-model="selectedPostOrder" @update:model-value="handleSelectedPostOrder" class="shrink-0" />
+      <CustomDatePicker v-model="selectedDate" @update:model-value="handleSelectedDate" class="shrink-0" />
+      <CustomToggleSwitch v-model="isCheckedWinNumber" @update:model-value="handleCheckedWinNumber" class="shrink-0">
         <template v-slot:label>
           <span v-once>លេខឈ្នះ</span>
         </template>
@@ -141,6 +141,9 @@ import CustomToggleSwitch from "@/components/shared/Form/SwitchToggle/SwitchTogg
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import GridVirtualizerDynamic from "@/components/tracking_report/GridVirtualizerDynamic.vue";
+import { useSearchParams } from "@/composables/uri-params/useSearchParams";
+import useTabTitleManager from "@/composables/tab-title-manager/useTabTitleManager";
+import customDayjs from "@/composables/dayjs/useConfiguredDayjs";
 
 const bodyRequest = ref<TrackingReportRequest>({
     "sery_id": 1,
@@ -151,6 +154,55 @@ const bodyRequest = ref<TrackingReportRequest>({
     "check_win_number": 0,
     "date": "2025-11-29"
 });
+
+// init dynamic tab title
+const { setTitle } = useTabTitleManager();
+
+// init url params
+const { params } = useSearchParams({
+  platform_id: {
+    default: 0,
+    parse: (value: string) => Number(value),
+    serialize: (value: number) => String(value),
+  },
+  sery_id: {
+    default: 0,
+    parse: (value: string) => Number(value),
+    serialize: (value: number) => String(value),
+  },
+  group_time_id: {
+    default: 0,
+    parse: (value: string) => Number(value),
+    serialize: (value: number) => String(value),
+  },
+
+  sery_time_id: {
+    default: 0,
+    parse: (value: string) => Number(value),
+    serialize: (value: number) => String(value),
+  },
+  date: {
+    default: "",
+    parse: (value: string) => value,
+    serialize: (value: string) => String(value),
+  },
+  post_order_id: {
+    default: 0,
+    parse: (value: string) => Number(value),
+    serialize: (value: number) => String(value),
+  },
+  check_win_number: {
+    default: 0,
+    parse: (value: string) => Number(value),
+    serialize: (value: number) => String(value),
+  },
+  sery_name: {
+    default: "",
+    parse: (value: string) => value,
+    serialize: (value: string) => String(value),
+  },
+});
+
 
 // init state/data
 const { t } = useI18n();
@@ -185,6 +237,48 @@ const { trackingReportInfo, isLoading: isLoadingTrackingReport, countdown, refet
 //   }
 // });
 
+
+const handleSelectedSery = (selectedSeryItem: Sery | null) => {
+  if (selectedSeryItem && selectedGroupTime.value) {
+  // assign url & dynamic Tab Title
+    params.value.sery_id = selectedSeryItem.id;
+    params.value.sery_name = selectedSeryItem.sery_name;
+    setTitle(selectedSeryItem.sery_name);
+    params.value.group_time_id = selectedGroupTime.value.group_time_id;
+    params.value.sery_time_id = selectedGroupTime.value.sery_time_id;
+  }
+
+}
+
+const handleSelectedGroupTime = (selectedGroupTimeItem: SeriesTime | null) => {
+  if (selectedGroupTimeItem) {
+     // assign url
+    params.value.group_time_id = selectedGroupTimeItem.group_time_id;
+    params.value.sery_time_id = selectedGroupTimeItem.sery_time_id;
+  }
+}
+
+const handleSelectedPostOrder = (selectedPostOrderItem: PostOrder | null) => {
+  if (selectedPostOrderItem) {
+    // assign url
+    params.value.post_order_id = selectedPostOrderItem.id;
+  }
+}
+
+const handleSelectedDate = (selectedDateItem: Date | null) => {
+  console.log("👽 : selectedDateItem:", customDayjs(selectedDateItem).format('YYYY-MM-DD')) 
+  if (selectedDateItem) {
+    params.value.date = customDayjs(selectedDateItem).format('YYYY-MM-DD');
+  }
+}
+
+const handleCheckedWinNumber = (checkedWinNumber: boolean) => {
+  const winNumberId = checkedWinNumber ? 1 : 0;
+  // assign url & data
+  params.value.check_win_number = winNumberId;
+  bodyRequest.value.check_win_number = winNumberId;
+}
+
 const handleRefresh = () => {
   refetchTrackingReports(bodyRequest.value);
   showFilterDialog.value = false;
@@ -200,6 +294,12 @@ const handleNumberBetSearch = (data: { searchNumber: string; postName: string })
   console.log("👽 : postName:", postName);
   console.log("👽 : searchNumber:", searchNumber);
 }
+
+onMounted(() => {
+  if (selectedSery.value) {
+    setTitle(selectedSery.value.sery_name);
+  }
+})
 </script>
 
 <style scoped>

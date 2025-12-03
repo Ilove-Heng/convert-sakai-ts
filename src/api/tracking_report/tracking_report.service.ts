@@ -1,4 +1,4 @@
-import type { TrackingReportRequest, TrackingReportResponse } from '@/types/tracking/trackingReportType';
+import type { TrackingReportRequest, TrackingReportResponse } from '@/api';
 import { apiRequest } from '../http/client';
 
 export const trackingReportService = {
