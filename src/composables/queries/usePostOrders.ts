@@ -15,7 +15,7 @@ const fetchPostOrders = async (): Promise<PostOrder[]> => {
 };
 
 export const usePostOrders = () => {
-    const { data: postOrder, isLoading, error, isFetching } = useQuery({
+    const { data: postOrders, isLoading, error, isFetching } = useQuery({
         queryKey: postOrdersKeys.lists(),
         queryFn: fetchPostOrders,
         retry: 1,
@@ -27,7 +27,7 @@ export const usePostOrders = () => {
     });
 
     return {
-        postOrder,
+        postOrders,
         isLoading,
         error, 
         isFetching

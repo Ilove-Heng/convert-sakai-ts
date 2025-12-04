@@ -44,15 +44,24 @@
               <InputText 
               v-else 
               type="text" 
-              @blur="toggleEditMode(null)"
               v-model="searchNumber"
-              @update:model-value="searchNumberInPostByName( reactiveColumns[virtualColumn.index].post_name)"
-              @click:clear="clearSearchNumber"
-              placeholder="Search here..."
+              @update:model-value="searchNumberInPostByName(reactiveColumns[virtualColumn.index].post_name)"
+              @blur="handleBlur"
+              placeholder="Search number..."
               :maxlength="3"
+              v-keyfilter.num
               autofocus
-              class="h-11"
+              class="h-11 w-full pr-10"
+              >
+              <Button
+                v-if="searchNumber"
+                icon="pi pi-times"
+                class="p-button-text p-button-sm absolute right-1 top-1/2 -translate-y-1/2"
+                @click="clearSearchNumber"
+                severity="secondary"
+                text
               />
+            </InputText>
 
               <div class="flex w-auto h-full bg-[#E9F1F7]">
                 <!-- 2D -->
@@ -66,10 +75,10 @@
                     <!-- split total / odds amount -->
                      <div class="flex flex-col items-end justify-center h-full mr-2">
                         <span class=" text-[16px] font-bold whitespace-nowrap text-gray-950 Roboto">
-                          {{ numberFormat(reactiveColumns[virtualColumn.index].posts[0].max_amount) }}
+                          {{ numberFormat(reactiveColumns[virtualColumn.index].posts[0].max_amount) ?? 0 }}
                         </span>
                         <span class="border-t! border-gray-400 border-dotted w-full text-right  text-[16px] font-bold text-blue-800 Roboto whitespace-nowrap">
-                          {{ numberFormat(reactiveColumns[virtualColumn.index].posts[0].max_total_amount) }}
+                          {{ numberFormat(reactiveColumns[virtualColumn.index].posts[0].max_total_amount) ?? 0 }}
                         </span>
                      </div> 
                   </div>
@@ -86,10 +95,10 @@
                     <!-- split total / odds amount -->
                      <div class="flex flex-col items-end justify-center h-full mr-2">
                         <span class=" text-[16px] font-bold whitespace-nowrap text-gray-950 Roboto">
-                           {{ numberFormat(reactiveColumns[virtualColumn.index].posts[1].max_amount) }}
+                           {{ numberFormat(reactiveColumns[virtualColumn.index].posts[1].max_amount) ?? 0 }}
                         </span>
                         <span class="border-t! border-gray-400 border-dotted w-full text-right  text-[16px] font-bold text-blue-800 Roboto whitespace-nowrap">
-                          {{ numberFormat(reactiveColumns[virtualColumn.index].posts[1].max_total_amount) }}
+                          {{ numberFormat(reactiveColumns[virtualColumn.index].posts[1].max_total_amount) ?? 0 }}
                         </span>
                      </div> 
                   </div>
@@ -313,6 +322,19 @@ function toggleEditMode (idx: number | null) {
   searchNumber.value = "";
 };
 
+function handleBlur(event: FocusEvent) {
+  // Don't close if clicking the clear button
+  const relatedTarget = event.relatedTarget as HTMLElement;
+  if (relatedTarget?.classList.contains('p-button')) {
+    return;
+  }
+  
+  // Close search input after a small delay
+  setTimeout(() => {
+    searchPostNameIndex.value = null;
+  }, 200);
+}
+
 // Debounce utility function with TypeScript
 function debounce<T extends (...args: any[]) => any>(func: T, wait: number): (...args: Parameters<T>) => void {
   let timeout: ReturnType<typeof setTimeout> | null = null;
@@ -339,10 +361,12 @@ function searchNumberInPostByName(postName: string) {
   debouncedEmit(searchNumber.value, postName);
 };
 
+// Updated clear function
 function clearSearchNumber() {
   searchNumber.value = "";
+  searchPostNameIndex.value = null;
   emit('numberBetClearSearch');
-};
+}
 </script>
 
 <style scoped lang="scss">

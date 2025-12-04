@@ -1,7 +1,7 @@
 import { trackingReportService } from '@/api';
 import type { TrackingReportInfo, TrackingReportRequest } from '@/api';
-import { useQuery, useQueryClient } from '@tanstack/vue-query';
-import { ref, onUnmounted } from 'vue';
+import { useQuery } from '@tanstack/vue-query';
+import { ref, onUnmounted, watch, computed, type Ref } from 'vue';
 
 // Query key factory
 const trackingReportKeys = {
@@ -14,14 +14,16 @@ const fetchTrackingReport = async(bodyRequest: TrackingReportRequest): Promise<T
     return response.data;
 }
 
-export const useTrackingReport = (bodyRequest: TrackingReportRequest) => {
-    const queryClient = useQueryClient();
+export const useTrackingReport = (bodyRequest: Ref<TrackingReportRequest>) => {
     const countdown = ref(10); // countdown in seconds
     let countdownInterval: number | null = null;
 
-    const { data: trackingReportInfo, isLoading, error, isFetching } = useQuery({
-        queryKey: trackingReportKeys.detail(bodyRequest),
-        queryFn: () => fetchTrackingReport(bodyRequest),
+    // Create a computed query key that updates when bodyRequest changes
+    const queryKey = computed(() => trackingReportKeys.detail(bodyRequest.value));
+
+    const { data: trackingReportInfo, isLoading, error, isFetching, refetch } = useQuery({
+        queryKey: queryKey,
+        queryFn: () => fetchTrackingReport(bodyRequest.value),
         refetchInterval: 10_000, // poll every 10s
         refetchOnWindowFocus: false,
         refetchOnReconnect: true,
@@ -49,6 +51,14 @@ export const useTrackingReport = (bodyRequest: TrackingReportRequest) => {
     // Initialize countdown
     startCountdown();
 
+    // Reset countdown when data is fetched (polling or manual refetch)
+    watch(isFetching, (fetching, wasFetching) => {
+        if (wasFetching && !fetching) {
+            // Just finished fetching
+            startCountdown();
+        }
+    });
+
     // Cleanup on unmount
     onUnmounted(() => {
         if (countdownInterval) {
@@ -56,11 +66,11 @@ export const useTrackingReport = (bodyRequest: TrackingReportRequest) => {
         }
     });
 
-    const refetchTrackingReports = (bodyRequest: TrackingReportRequest) => {
-        if (!isFetching) {
-            queryClient.invalidateQueries({
-                queryKey: trackingReportKeys.detail(bodyRequest)
-            });
+    const refetchTrackingReports = async () => {
+        if (!isFetching.value) {
+            // Use the built-in refetch from useQuery
+            // This will use the current bodyRequest.value
+            await refetch();
             // Reset countdown when manually refetching
             startCountdown();
         }

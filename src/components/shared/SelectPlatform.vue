@@ -35,18 +35,32 @@
 import type { Platform } from "@/api";
 import { usePlatforms } from "@/composables/queries/usePlatforms";
 
+// init props
+const props = defineProps<{
+  disableAutoSelect?: boolean;
+}>()
+
 // init state/data
 const selectedPlatform = defineModel<Platform | null>({
   default: null,
 });
 const { platforms, isLoading: isLoadingPlatform } = usePlatforms();
 
+// Track if component has been initialized
+const hasInitialized = ref(false);
 
 // Auto-select first post order when data loads
-watchEffect(() => {
-  if (platforms.value && platforms.value.length && !selectedPlatform.value) {
-    selectedPlatform.value = platforms.value[0] || null;
+watch(platforms, (newPlatforms) => {
+  if (newPlatforms &&newPlatforms.length && !selectedPlatform.value && !props.disableAutoSelect && hasInitialized.value) {
+    selectedPlatform.value = newPlatforms[0] || null;
   }
+}, { immediate: false })
+
+onMounted(() => {
+  // Mark as initialized after mount
+  setTimeout(() => {
+    hasInitialized.value = true;
+  }, 800);
 });
 </script>
 

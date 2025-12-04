@@ -2,7 +2,7 @@
   <!-- <pre>{{ postOrder }}</pre> -->
   <Select
     v-model="selectedPostOrder"
-    :options="postOrder"
+    :options="postOrders"
     :loading="isLoadingPostOrder"
     optionLabel="post_order_name"
     placeholder="Select a Post Order"
@@ -37,18 +37,34 @@
 import type { PostOrder } from "@/api";
 import { usePostOrders } from "@/composables/queries/usePostOrders";
 
+// init props
+const props = defineProps<{
+  disableAutoSelect?: boolean;
+}>()
+
 // init state/data
 const selectedPostOrder = defineModel<PostOrder | null>({
   default: null,
 });
-const { postOrder, isLoading: isLoadingPostOrder } = usePostOrders();
+const { postOrders, isLoading: isLoadingPostOrder } = usePostOrders();
+
+// Track if component has been initialized
+const hasInitialized = ref(false);
 
 // Auto-select first post order when data loads
-watchEffect(() => {
-  if (postOrder.value && postOrder.value.length && !selectedPostOrder.value) {
-    selectedPostOrder.value = postOrder.value[0] || null;
+watch(postOrders, (newPostOrders) => {
+  if (newPostOrders &&newPostOrders.length && !selectedPostOrder.value && !props.disableAutoSelect && hasInitialized.value) {
+    selectedPostOrder.value = newPostOrders[0] || null;
   }
+}, { immediate: false })
+
+onMounted(() => {
+  // Mark as initialized after mount
+  setTimeout(() => {
+    hasInitialized.value = true;
+  }, 800);
 });
+
 </script>
 
 <style lang="scss">

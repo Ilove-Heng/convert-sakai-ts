@@ -45,6 +45,11 @@
 import type { Sery } from "@/api";
 import { useSeries } from "@/composables/queries/useSeries";
 
+// init props
+const props = defineProps<{
+  disableAutoSelect?: boolean;
+}>();
+
 // init state/data
 const selectedSery = defineModel<Sery | null>({
     default: null
@@ -52,10 +57,20 @@ const selectedSery = defineModel<Sery | null>({
 
 const { series, isLoading: isLoadingSeries } = useSeries();
 
-// Auto-select first series when data loads
-watchEffect(() => {
-    if (series.value && series.value.length && !selectedSery.value) {
-        selectedSery.value = series.value[0] || null;
-    }
+// Track if component has been initialized
+const hasInitialized = ref(false);
+
+// Auto-select first series only if not disabled and no value exists
+watch(series, (newSeries) => {
+  if (newSeries?.length && !selectedSery.value && !props.disableAutoSelect && hasInitialized.value) {
+    selectedSery.value = newSeries[0] || null;
+  }
+}, { immediate: false });
+
+onMounted(() => {
+  // Mark as initialized after mount
+  setTimeout(() => {
+    hasInitialized.value = true;
+  }, 800);
 });
 </script>
