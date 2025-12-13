@@ -1,14 +1,12 @@
 <template>
   <Form 
   ref="form"
-  autocomplete="off"
   @submit="onFormSubmit" 
   :initial-values="initialFormValues" 
   :validation-schema="validationSchema" 
   :key="formKey"
     v-slot="{ errors, meta }" class="sery-result-entry-container">
     <table>
-      <!-- <pre>{{ seriesResult }}</pre> -->
       <tbody>
        <!-- START post A4 -->
         <tr>
@@ -21,8 +19,8 @@
             <Field :name="`resultNumber.${0}`" v-slot="{ field, errorMessage }">
               <IconField>
                 <InputText 
-                  :readonly="getNumberReadOnly(0)"
-                  v-bind="field" :maxlength="getNumberLength(0)"
+                :readonly="getNumberReadOnly(0)"
+                v-bind="field" :maxlength="getNumberLength(0)"
                   :class="{ 'p-invalid': errorMessage }" class="w-full" v-keyfilter.num
                   @input="handleInput($event, 0)" />
                  <InputIcon
@@ -58,7 +56,7 @@
             <td >
             <Field :name="`resultNumber.${1}`" v-slot="{ field, errorMessage }">
               <IconField>
-                <InputText 
+                <InputText
                 :readonly="getNumberReadOnly(1)"
                 v-bind="field" :maxlength="getNumberLength(1)"
                   :class="{ 'p-invalid': errorMessage }" class="w-full" v-keyfilter.num
@@ -161,7 +159,7 @@
           <td v-for="offset in 2" :key="`cell-${postIndex.start + offset - 1}`">
             <Field :name="`resultNumber.${postIndex.start + offset - 1}`" v-slot="{ field, errorMessage }">
               <IconField>
-                <InputText 
+                <InputText
                 :readonly="getNumberReadOnly(postIndex.start + offset - 1)"
                 v-bind="field" :maxlength="getNumberLength(postIndex.start + offset - 1)"
                   :class="{ 'p-invalid': errorMessage }" class="w-full" v-keyfilter.num

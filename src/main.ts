@@ -13,6 +13,9 @@ import ConfirmationService from 'primevue/confirmationservice';
 import KeyFilter from 'primevue/keyfilter';
 import ToastService from 'primevue/toastservice';
 
+// custom plugins
+import { AutofillPlugin } from './plugins/autofill.directive';
+
 // Tanstack Vue Query
 import { VueQueryPlugin } from '@tanstack/vue-query';
 
@@ -57,6 +60,7 @@ app.use(PrimeVue, {
 app.use(ToastService);
 app.use(ConfirmationService);
 app.use(i18n);
+app.use(AutofillPlugin);
 app.directive('keyfilter', KeyFilter);
 
 app.use(VueQueryPlugin, {

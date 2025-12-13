@@ -9,23 +9,22 @@
   class="sery-result-entry-container"
   >
     <table>
-      <!-- <pre>{{ seriesResult[0].result_number }}</pre> -->
       <tbody>
         <!-- First 17 fields (Giải) -->
-        <tr v-for="idx in 17" :key="`row-${idx - 1}`">
+        <tr v-for="idx in 14" :key="`row-${idx - 1}`">
           <td class="labelcell" v-if="shouldShowLabel(idx - 1)">
             <div class="label">
               <label>{{ getPostName(idx - 1) }}</label>
             </div>
           </td>
           <td class="labelcell" v-else></td>
+
           <td>
             <Field :name="`resultNumber.${idx - 1}`" v-slot="{ field, errorMessage }">
               <IconField>
                 <InputText 
                 :readonly="getNumberReadOnly(idx - 1)"
                 v-bind="field"
-                :autofocus="idx === 1"
                 :maxlength="getNumberLength(idx - 1)"
                   :class="{ 'p-invalid': errorMessage }" class="w-full" 
                   v-keyfilter.num
@@ -40,7 +39,7 @@
           </td>
         </tr>
 
-        <!-- Posts B, C, D, F, I, N, K (indices 17-30) -->
+        <!-- Posts B, C, D, F, I (indices 14-23) -->
         <tr v-for="postIndex in POST_CONFIGS" :key="`post-${postIndex.start}`">
           <td class="labelcell">
             <div class="label">
@@ -51,13 +50,10 @@
             <Field :name="`resultNumber.${postIndex.start + offset - 1}`" v-slot="{ field, errorMessage }">
               <IconField>
                 <InputText 
-                  :readonly="getNumberReadOnly(postIndex.start + offset - 1)"
-                  v-bind="field" 
-                  :maxlength="getNumberLength(postIndex.start + offset - 1)"
-                  :class="{ 'p-invalid': errorMessage }" class="w-full" 
-                  v-keyfilter.num
-                  @input="handleInput($event, postIndex.start + offset - 1)" 
-                />
+                :readonly="getNumberReadOnly(postIndex.start + offset - 1)"
+                v-bind="field" :maxlength="getNumberLength(postIndex.start + offset - 1)"
+                  :class="{ 'p-invalid': errorMessage }" class="w-full" v-keyfilter.num
+                  @input="handleInput($event, postIndex.start + offset - 1)" />
                  <InputIcon
                   class="flex items-center justify-center bg-[#ededed] border border-[#1e2939] text-black! text-xs font-medium h-5 w-5 rounded-full">
                   {{ getNumberLength(postIndex.start + offset - 1) }}
@@ -107,15 +103,13 @@ import {
 } from '@/api';
 
 // Constants
-const TOTAL_FIELDS = 31;
+const TOTAL_FIELDS = 23;
 const POST_CONFIGS = [
-  { start: 17 }, // B
-  { start: 19 }, // C
-  { start: 21 }, // D
-  { start: 23 }, // F
-  { start: 25 }, // I
-  { start: 27 }, // N
-  { start: 29 }, // K
+  { start: 14 }, // B
+  { start: 16 }, // C
+  { start: 18 }, // D
+  { start: 20 }, // F
+  { start: 22 }, // I
 ];
 
 interface SeryProps {

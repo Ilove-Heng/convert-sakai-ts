@@ -35,7 +35,21 @@ const createClient = (): AxiosInstance => {
 
   // Response interceptor can be added here
   client.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      // Handle 201 Created status
+      if (response.status === StatusCodes.CREATED && toastService) {        
+        if (toastService) {
+          toastService.add({
+            severity: 'success',
+            summary: 'Created',
+            detail: response.data.message, 
+            life: 2500, 
+            group: 'br'
+          });
+        }
+      }
+      return response;
+    },
     (error) => {
       // Handle Bad Request 400
       if (error.response?.status === StatusCodes.BAD_REQUEST) {

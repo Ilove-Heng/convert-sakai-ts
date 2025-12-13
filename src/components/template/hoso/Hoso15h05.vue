@@ -9,7 +9,6 @@
   class="sery-result-entry-container"
   >
     <table>
-      <!-- <pre>{{ seriesResult[0].result_number }}</pre> -->
       <tbody>
         <!-- First 17 fields (Giải) -->
         <tr v-for="idx in 17" :key="`row-${idx - 1}`">
@@ -19,13 +18,13 @@
             </div>
           </td>
           <td class="labelcell" v-else></td>
+
           <td>
             <Field :name="`resultNumber.${idx - 1}`" v-slot="{ field, errorMessage }">
               <IconField>
                 <InputText 
                 :readonly="getNumberReadOnly(idx - 1)"
                 v-bind="field"
-                :autofocus="idx === 1"
                 :maxlength="getNumberLength(idx - 1)"
                   :class="{ 'p-invalid': errorMessage }" class="w-full" 
                   v-keyfilter.num
@@ -51,13 +50,10 @@
             <Field :name="`resultNumber.${postIndex.start + offset - 1}`" v-slot="{ field, errorMessage }">
               <IconField>
                 <InputText 
-                  :readonly="getNumberReadOnly(postIndex.start + offset - 1)"
-                  v-bind="field" 
-                  :maxlength="getNumberLength(postIndex.start + offset - 1)"
-                  :class="{ 'p-invalid': errorMessage }" class="w-full" 
-                  v-keyfilter.num
-                  @input="handleInput($event, postIndex.start + offset - 1)" 
-                />
+                :readonly="getNumberReadOnly(postIndex.start + offset - 1)"
+                v-bind="field" :maxlength="getNumberLength(postIndex.start + offset - 1)"
+                  :class="{ 'p-invalid': errorMessage }" class="w-full" v-keyfilter.num
+                  @input="handleInput($event, postIndex.start + offset - 1)" />
                  <InputIcon
                   class="flex items-center justify-center bg-[#ededed] border border-[#1e2939] text-black! text-xs font-medium h-5 w-5 rounded-full">
                   {{ getNumberLength(postIndex.start + offset - 1) }}

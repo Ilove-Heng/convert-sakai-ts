@@ -371,8 +371,6 @@ const applyFilters = () => {
 
 const handleNumberBetSearch = (data: { searchNumber: string; postName: string }) => {
   const { searchNumber, postName } = data;
-  console.log("👽 : postName:", postName);
-  console.log("👽 : searchNumber:", searchNumber);
   searchQuery.value = { searchNumber, postName };
 }
 
